@@ -205,6 +205,14 @@
   \smallskip
 }
 
+\newcommand{\cvother}[3]{%
+  \begin{tabularx}{\linewidth}{@{}p{2em} @{\hspace{1ex}} >{\raggedright\arraybackslash}X@{}}
+  \multirow{1}{*}{\Large\color{accent}#1} & \small #2\\
+  % & #3
+  \end{tabularx}%
+  % \smallskip
+}
+
 \newcommand{\cvtag}[1]{%
   \tikz[baseline]\node[anchor=base,draw=body!30,rounded corners,inner xsep=1ex,inner ysep =0.75ex,text height=1.5ex,text depth=.25ex]{#1};
 }
@@ -282,7 +290,12 @@
 
 \newenvironment{cvcolumn}[1]{\begin{minipage}[t]{#1}\raggedright}{\end{minipage}}
 
-\RequirePackage[backend=biber,style=authoryear,sorting=ydnt]{biblatex}
+
+\RequirePackage[american]{babel}
+\RequirePackage[backend=biber,bibstyle=apa,sorting=ydnt,uniquename=init,maxnames=7,defernumbers=true]{biblatex}
+\DeclareLanguageMapping{american}{american-apa}
+% \DeclareLanguageMapping{british}{british-apa}
+% \RequirePackage[backend=biber,style=authoryear,sorting=ydnt]{biblatex}
 %% For removing numbering entirely when using a numeric style
 % \setlength{\bibhang}{1em}
 % \DeclareFieldFormat{labelnumberwidth}{\makebox[\bibhang][l]{\itemmarker}}
@@ -290,7 +303,28 @@
 \defbibheading{pubtype}{\cvsubsection{#1}}
 \renewcommand{\bibsetup}{\vspace*{-\baselineskip}}
 \AtEveryBibitem{\makebox[\bibhang][l]{\itemmarker}}
-\setlength{\bibitemsep}{0.25\baselineskip}
+\setlength{\bibitemsep}{0.5\baselineskip}
+
+\newcommand{\myname}[2]{%
+   \def\@mylastname{#1}%
+   \def\@myfirstname{#2}%
+}
+
+\renewcommand*{\mkbibnamefamily}[1]{%
+  \ifboolexpr{ test {\ifdefstrequal{\namepartfamily}{\@mylastname}}
+               and
+               test {\ifdefstrequal{\namepartgiven}{\@myfirstname}}}
+    {\textbf{#1}}%
+    {#1}%
+}
+
+\renewcommand*{\mkbibnamegiven}[1]{%
+  \ifboolexpr{ test {\ifdefstrequal{\namepartfamily}{\@mylastname}}
+               and
+               test {\ifdefstrequal{\namepartgiven}{\@myfirstname}}}
+    {\textbf{#1}}%
+    {#1}%
+}
 
 % v1.1.2: make it easier to add a sidebar aligned with top of next page
 \RequirePackage{afterpage}
